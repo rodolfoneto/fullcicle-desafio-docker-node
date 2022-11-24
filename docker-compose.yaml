@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    # image: node:19
+    build: 
+      context: ./node
+    volumes:
+      - ./node:/app
+    command: node /app/index.js
+    restart: always
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    networks:
+      - desafio-02_default
+    depends_on:
+      - db
+
+  proxy:
+    container_name: proxy
+    build:
+      context: ./nginx
+    ports:
+      - 8080:80
+    networks:
+      - desafio-02_default
+    depends_on:
+      - app
+
+  db:
+    container_name: db
+    platform: linux/amd64
+    restart: always
+    build:
+      context: ./mysql
+    environment:
+      MYSQL_DATABASE: nodedb
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: node
+      MYSQL_PASSWORD: node
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - desafio-02_default
+
+networks:
+  desafio-02_default:
+    driver: bridge
