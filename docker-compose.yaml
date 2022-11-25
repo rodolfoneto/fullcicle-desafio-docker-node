@@ -5,9 +5,9 @@ services:
     container_name: app
     build: 
       context: ./node
-    volumes:
-      - ./node:/app
-    command: node /app/index.js
+    # volumes:
+    #   - ./node:/app
+    command: npm install && node /app/index.js
     restart: always
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
     networks:
