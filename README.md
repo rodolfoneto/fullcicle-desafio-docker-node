@@ -1,4 +1,4 @@
-# fullcicle-desafio-docker-node
+# Fullcycle 3.0: Desafio Docker Node
 Projeto para o segundo desafio do curso FullCycle 3.0
 Consiste em configurar 3 containers
  - APP Node
